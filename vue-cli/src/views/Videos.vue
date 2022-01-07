@@ -1,13 +1,6 @@
 <template>
-  <div class="home">
-    <h1>Bienvenue sur la marketplace de vidéos !</h1>
-    <p>
-      Sur ce site, vous pourrez acheter des vidéos pour vos projets ! <br />
-      Vous trouverez en dessous la liste des vidéos à venir ainsi que les
-      récentes.
-    </p>
-    <router-link class="btn" to="/videos">Toutes les vidéos</router-link>
-
+  <div id="videos">
+    <h1>This is the page with all our videos for sale !</h1>
     <h2>New</h2>
     <section v-for="item in videoList" :key="item.title">
       <div v-if="isNew(item)">
@@ -22,7 +15,14 @@
         <VideoItem :item="item" />
       </div>
     </section>
+    <hr>
 
+    <h2>Other</h2>
+    <section v-for="item in videoList" :key="item.title">
+      <div v-if="!isNew(item) && !isComing(item)">
+        <VideoItem :item="item" />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -75,15 +75,19 @@ export default {
   methods: {
     isComing(item) {
       //check if the video has a date after before today
-      if (new Date(item.saleDate) > new Date()) { 
+      if (new Date(item.saleDate) > new Date()) {
         return true;
       } else {
         return false;
       }
     },
     isNew(item) {
-      //check if the video has a less than 30 days old but not in the futu
-      if (new Date(item.saleDate) > new Date(new Date().setDate(new Date().getDate() - 30)) && new Date(item.saleDate) < new Date()) {
+      //check if the video has a less than 30 days old but not in the future
+      if (
+        new Date(item.saleDate) >
+          new Date(new Date().setDate(new Date().getDate() - 30)) &&
+        new Date(item.saleDate) < new Date()
+      ) {
         return true;
       } else {
         return false;

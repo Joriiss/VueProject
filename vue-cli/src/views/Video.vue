@@ -1,41 +1,23 @@
 <template>
-  <div class="home">
-    <h1>Bienvenue sur la marketplace de vidéos !</h1>
-    <p>
-      Sur ce site, vous pourrez acheter des vidéos pour vos projets ! <br />
-      Vous trouverez en dessous la liste des vidéos à venir ainsi que les
-      récentes.
-    </p>
-    <router-link class="btn" to="/videos">Toutes les vidéos</router-link>
-
-    <h2>New</h2>
+  <div class="video_page">
+    <router-link :to="{ name: 'Videos' }">🠔 See all videos</router-link>
     <section v-for="item in videoList" :key="item.title">
-      <div v-if="isNew(item)">
-        <VideoItem :item="item" />
-      </div>
+      <VideoPage v-if="item.id == id" :item="item" />
     </section>
-    <hr>
-
-    <h2>Coming soon</h2>
-    <section v-for="item in videoList" :key="item.title">
-      <div v-if="isComing(item)">
-        <VideoItem :item="item" />
-      </div>
-    </section>
-
   </div>
 </template>
 
 <script>
-import VideoItem from "../components/VideoItem.vue";
+import VideoPage from "../components/VideoPage.vue";
 
 export default {
   name: "app",
   components: {
-    VideoItem,
+    VideoPage,
   },
   data() {
     return {
+      id: this.$route.params.id,
       videoList: [
         {
           id: "1",
@@ -44,6 +26,8 @@ export default {
           price: "28",
           link: "https://www.youtube.com/embed/XqmrRxLlZTs",
           saleDate: "2022/01/04",
+          isComing: false,
+          isNew: false,
         },
         {
           id: "2",
@@ -51,7 +35,9 @@ export default {
           description: "“Never Gonna Give You Up” was a global smash on its release in July 1987, topping the charts in 25 countries including Rick’s native UK and the US Billboard Hot 100.  It also won the Brit Award for Best single in 1988. Stock Aitken and Waterman wrote and produced the track which was the lead-off single and lead track from Rick’s debut LP “Whenever You Need Somebody”.  The album was itself a UK number one and would go on to sell over 15 million copies worldwide.",
           price: "1200",
           link: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-          saleDate: "2021/11/22",
+          saleDate: "2022/22/11",
+          isComing: false,
+          isNew: false,
         },
         {
           id: "3",
@@ -59,7 +45,9 @@ export default {
           description: "The Aureus, a 25-denarius piece was the main storage of wealth used by the romans and the king of its monetary standard for centuries. Today, lets explore some of the history and curiosities about this majestic coin.",
           price: "2",
           link: "https://www.youtube.com/embed/8DC40wRFvSA",
-          saleDate: "2022/02/15",
+          saleDate: "2022/08/01",
+          isComing: false,
+          isNew: false,
         },
         {
           id: "4",
@@ -68,6 +56,8 @@ export default {
           price: "20",
           link: "https://www.youtube.com/embed/zYk0GH5iFYI",
           saleDate: "2022/01/06",
+          isComing: false,
+          isNew: false,
         },
       ],
     };
@@ -82,7 +72,7 @@ export default {
       }
     },
     isNew(item) {
-      //check if the video has a less than 30 days old but not in the futu
+      //check if the video has a less than 30 days old but not in the future
       if (new Date(item.saleDate) > new Date(new Date().setDate(new Date().getDate() - 30)) && new Date(item.saleDate) < new Date()) {
         return true;
       } else {
